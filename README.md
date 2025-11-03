@@ -87,7 +87,7 @@ Start the backend server:
 node server.js
 
 
-The server will be running at http://localhost:5000.
+The server will be running at https://event-flow-ekfv.onrender.com.
 
 2. Frontend Setup
 
