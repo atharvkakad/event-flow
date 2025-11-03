@@ -1,0 +1,284 @@
+/* styles.css */
+
+/* --- Universal Settings & Variables --- */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
+
+:root {
+    --primary-glow: #00f7ff;
+    --secondary-glow: #f000ff;
+    --dark-bg: #0d0d1a;
+    --glass-bg: rgba(22, 22, 40, 0.6);
+    --text-primary: #ffffff;
+    --text-secondary: #c0c0c0;
+    --border-color: rgba(0, 247, 255, 0.3);
+    --border-hover: rgba(0, 247, 255, 0.8);
+    --font-family: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--dark-bg);
+    color: var(--text-primary);
+    overflow-x: hidden; /* Prevent horizontal scroll from animations */
+}
+
+/* --- Animated Gradient Background --- */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    background: radial-gradient(circle at 15% 25%, rgba(0, 247, 255, 0.15), transparent 40%),
+                radial-gradient(circle at 85% 75%, rgba(240, 0, 255, 0.15), transparent 40%);
+    animation: animateGlow 15s ease-in-out infinite;
+}
+
+@keyframes animateGlow {
+    0%, 100% {
+        background-position: 0% 50%, 50% 0%;
+    }
+    50% {
+        background-position: 100% 50%, 50% 100%;
+    }
+}
+
+/* --- Navigation Bar --- */
+.navbar {
+    background: var(--glass-bg);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    border-bottom: 1px solid var(--border-color);
+    transition: background 0.3s ease;
+}
+
+.navbar-brand {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: var(--text-primary) !important;
+    text-shadow: 0 0 5px var(--primary-glow);
+}
+
+.nav-link {
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-size: 0.9rem;
+}
+
+.nav-link:hover, .nav-link.active {
+    color: var(--primary-glow) !important;
+    text-shadow: 0 0 8px var(--primary-glow);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background-color: var(--primary-glow);
+    transition: width 0.3s ease;
+}
+
+.nav-link:hover::after, .nav-link.active::after {
+    width: 60%;
+}
+
+.navbar-toggler {
+    border-color: var(--border-color);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%280, 247, 255, 0.8%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+
+/* --- Hero Section & General Headers --- */
+.hero-section, .header-section {
+    position: relative;
+    padding: 120px 0;
+    text-align: center;
+    overflow: hidden;
+    background: transparent;
+    margin-top: 70px; /* Offset for fixed navbar */
+}
+#particles-js {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: 1;
+}
+.hero-section .container, .header-section .container {
+    position: relative;
+    z-index: 2;
+}
+
+.display-3, .display-4 {
+    font-weight: 700;
+    text-shadow: 0 0 15px var(--secondary-glow);
+}
+
+
+/* --- Buttons --- */
+.btn-primary {
+    background: transparent;
+    border: 2px solid var(--primary-glow);
+    color: var(--primary-glow);
+    font-weight: 600;
+    padding: 12px 30px;
+    border-radius: 50px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+}
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: var(--primary-glow);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.4s, height 0.4s;
+    z-index: -1;
+}
+.btn-primary:hover {
+    color: var(--dark-bg);
+    border-color: var(--primary-glow);
+    box-shadow: 0 0 20px var(--primary-glow);
+}
+.btn-primary:hover::before {
+    width: 225%;
+    height: 225%;
+}
+
+/* --- Cards (General, Events, Admin) --- */
+.card, .info-card, .login-card, .registration-form-container {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--border-color);
+    border-radius: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    overflow: hidden;
+    height: 100%;
+}
+.card:hover, .info-card:hover, .login-card:hover, .registration-form-container:hover {
+    transform: translateY(-10px) scale(1.02);
+    border-color: var(--border-hover);
+    box-shadow: 0 10px 30px rgba(0, 247, 255, 0.2);
+}
+
+.card-title {
+    color: var(--primary-glow);
+    font-weight: 600;
+}
+
+.card-text {
+    color: var(--text-secondary);
+}
+
+/* --- Forms --- */
+.form-control, .form-select {
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 8px;
+    padding: 12px;
+}
+.form-control:focus, .form-select:focus {
+    background: rgba(0,0,0,0.4);
+    color: var(--text-primary);
+    box-shadow: 0 0 15px var(--primary-glow);
+    border-color: var(--primary-glow);
+}
+.form-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+}
+::placeholder {
+    color: rgba(255, 255, 255, 0.4) !important;
+}
+
+/* --- Call to Action Section --- */
+.cta-section {
+    background: var(--glass-bg);
+    border: 1px solid var(--border-color);
+    padding: 4rem !important;
+}
+
+/* --- Footer --- */
+.footer {
+    background: #06060e;
+    padding: 20px 0;
+    margin-top: 50px;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+/* --- Admin Dashboard Specific --- */
+.card-icon {
+    font-size: 3rem;
+    color: var(--primary-glow);
+    text-shadow: 0 0 15px var(--primary-glow);
+    margin-bottom: 15px;
+}
+.modal-content {
+    background: var(--dark-bg);
+    border: 1px solid var(--primary-glow);
+}
+.modal-header {
+    border-bottom: 1px solid var(--border-color);
+}
+.modal-header .btn-close {
+    filter: invert(1) grayscale(100%) brightness(200%);
+}
+
+/* --- Splide Carousel Styles --- */
+.splide__arrow {
+    background: var(--glass-bg);
+}
+.splide__arrow svg {
+    fill: var(--primary-glow);
+}
+.splide__pagination__page.is-active {
+    background: var(--primary-glow);
+}
+
+
+/* --- ======== NEW: FORM VALIDATION STYLES ======== --- */
+/* These styles are for Assignment 3 */
+
+.error-message {
+    color: #ff6b6b; /* A bright, easily visible red */
+    font-size: 0.875rem; /* Slightly smaller than body text */
+    padding-top: 6px;
+    display: none; /* Hidden by default */
+}
+
+/* Style for inputs that fail validation */
+.form-control.is-invalid, 
+.form-select.is-invalid {
+    border-color: #ff6b6b !important; /* Use !important to override other styles if needed */
+    box-shadow: 0 0 10px rgba(255, 107, 107, 0.5); /* Red glow */
+}
+
+/* Optional: Style for inputs that pass validation */
+.form-control.is-valid, 
+.form-select.is-valid {
+    border-color: var(--primary-glow) !important;
+    box-shadow: 0 0 10px rgba(0, 247, 255, 0.5); /* Cyan glow */
+}

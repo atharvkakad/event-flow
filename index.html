@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>College Event Management System - Home</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/css/splide.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">EventFlow</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link" href="events.html">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registration.html">Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin-login.html">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="hero-section">
+        <div id="particles-js"></div>
+        <div class="container">
+            <h1 class="display-3 fw-bold mb-4" data-aos="fade-down" data-aos-duration="1000">Discover & Engage in College Events</h1>
+            <p class="lead mb-5" data-aos="fade-up" data-aos-duration="1000" data-aos-delay="200">Your one-stop platform to view, register, and manage all campus happenings.</p>
+            <a href="events.html" class="btn btn-primary btn-lg" data-aos="zoom-in" data-aos-duration="1000" data-aos-delay="400">Explore Events</a>
+        </div>
+    </header>
+
+    <section class="container my-5 py-5">
+        <h2 class="text-center mb-5" data-aos="fade-up">Featured Events</h2>
+        <div class="splide" id="featured-events-slider" data-aos="fade-up" data-aos-delay="200">
+            <div class="splide__track">
+                <ul class="splide__list" id="featured-events-list">
+                    <!-- JavaScript will add event slides here -->
+                    <li class="splide__slide">
+                        <div class="card h-100 mx-3">
+                            <div class="card-body p-4 text-center">
+                                <h5 class="card-title">Loading Events...</h5>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <section class="container text-center my-5 py-5" data-aos="zoom-in-up">
+        <div class="cta-section rounded-3 p-5">
+            <h2 class="mb-3">Ready to Participate?</h2>
+            <p class="lead mb-4">Don't miss out on exciting opportunities. Register for your favorite events today!</p>
+            <a href="registration.html" class="btn btn-primary btn-lg">Register Now</a>
+        </div>
+    </section>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2025 College Event Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@splidejs/splide@4.1.4/dist/js/splide.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- ======== SCRIPT UPDATED WITH LOOP FIX ======== -->
+    <script>
+        AOS.init({ once: true, duration: 800 });
+
+        document.addEventListener('DOMContentLoaded', function () {
+            
+            // This holds the Splide instance
+            let splideInstance = new Splide('#featured-events-slider');
+            
+            // Function to create a single slide
+            function createEventSlide(event) {
+                const shortDescription = event.description.length > 80 
+                    ? event.description.substring(0, 80) + '...' 
+                    : event.description;
+                
+                return `
+                    <li class="splide__slide">
+                        <div class="card h-100 mx-3">
+                            <img src="${event.image}" class="card-img-top" alt="${event.name}" onerror="this.src='https://placehold.co/400x250/0d0d1a/c0c0c0?text=Event'">
+                            <div class="card-body p-4 d-flex flex-column">
+                                <h5 class="card-title">${event.name}</h5>
+                                <p class="card-text small">${shortDescription}</p>
+                                <a href="events.html" class="btn btn-primary btn-sm mt-auto">View Details</a>
+                            </div>
+                        </div>
+                    </li>
+                `;
+            }
+
+            // Function to load events and init slider
+            async function loadFeaturedEvents() {
+                const splideList = document.getElementById('featured-events-list');
+                let eventCount = 0; // To count how many events we have
+
+                try {
+                    const response = await fetch('http://localhost:5000/api/events');
+                    if (!response.ok) throw new Error('Failed to fetch events');
+                    
+                    let events = await response.json();
+                    
+                    splideList.innerHTML = ''; // Clear the 'Loading...' slide
+
+                    if (events.length === 0) {
+                        splideList.innerHTML = `
+                            <li class="splide__slide">
+                                <div class="card h-100 mx-3">
+                                    <div class="card-body p-4 text-center">
+                                        <h5 class="card-title">No Events Found</h5>
+                                        <p class="card-text">Check back soon!</p>
+                                    </div>
+                                </div>
+                            </li>`;
+                        eventCount = 0;
+                    } else {
+                        // Show only the first 5 events as "featured"
+                        const featuredEvents = events.slice(0, 5); 
+                        eventCount = featuredEvents.length; // Get the actual count
+                        featuredEvents.forEach(event => {
+                            splideList.innerHTML += createEventSlide(event);
+                        });
+                    }
+
+                } catch (error) {
+                    console.error('Error loading featured events:', error);
+                    splideList.innerHTML = `
+                        <li class="splide__slide">
+                            <div class="card h-100 mx-3">
+                                <div class="card-body p-4 text-center">
+                                    <h5 class="card-title text-danger">Error Loading Events</h5>
+                                </div>
+                            </div>
+                        </li>`;
+                    eventCount = 0; // Set to 0 on error
+                }
+
+                // --- THIS IS THE FIX ---
+                
+                // 1. If we have no events, don't even try to mount the slider.
+                if (eventCount === 0) {
+                    // The "No events" message is already visible. We're done.
+                    // We also hide the slider arrows if they exist
+                    const arrows = document.querySelector('#featured-events-slider .splide__arrows');
+                    if(arrows) arrows.style.display = 'none';
+                    return; 
+                }
+
+                // 2. Destroy any old instance
+                if (splideInstance.state.is('mounted')) {
+                    splideInstance.destroy(true); // Destroy completely
+                }
+                
+                // 3. Set smart variables
+                const slidesPerPage = Math.min(eventCount, 3);
+                const shouldLoop = eventCount > slidesPerPage;
+
+                // 4. Re-init Splide with the correct, smart options
+                splideInstance = new Splide('#featured-events-slider', {
+                    type: shouldLoop ? 'loop' : 'slide', // No loop if not enough events
+                    perPage: slidesPerPage, // Don't ask for more slides than we have
+                    focus: 'center',
+                    autoplay: true,
+                    interval: 4000,
+                    pauseOnHover: true,
+                    gap: '1rem',
+                    breakpoints: { 
+                        992: { perPage: Math.min(eventCount, 2) }, // Also check count here
+                        768: { perPage: 1 }
+                    }
+                });
+                
+                splideInstance.mount();
+            }
+
+            // Call the function to load events
+            loadFeaturedEvents();
+        });
+
+        // Your particlesJS code is still here
+        particlesJS("particles-js", {
+          particles: {
+            number: { value: 80, density: { enable: true, value_area: 800 } },
+            color: { value: "#ffffff" }, shape: { type: "circle" },
+            opacity: { value: 0.5, random: false }, size: { value: 3, random: true },
+            line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+            move: { enable: true, speed: 4, direction: "none", random: false, straight: false, out_mode: "out", bounce: false }
+          },
+          interactivity: {
+            detect_on: "canvas",
+            events: { onhover: { enable: true, mode: "repulse" }, onclick: { enable: true, mode: "push" }, resize: true },
+            modes: { repulse: { distance: 100, duration: 0.4 }, push: { particles_nb: 4 } }
+          },
+          retina_detect: true
+        });
+    </script>
+</body>
+</html>
+

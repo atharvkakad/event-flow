@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Upcoming Events - College Event Management System</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">EventFlow</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" href="about.html">About</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="events.html">Events</a></li>
+                    <li class="nav-item"><a class="nav-link" href="contact.html">Contact</a></li>
+                    <li class="nav-item"><a class="nav-link" href="registration.html">Register</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin-login.html">Admin Login</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header-section">
+        <div class="container" data-aos="fade-down">
+            <h1 class="display-4 fw-bold mb-3">Upcoming College Events</h1>
+            <p class="lead">Explore a wide range of academic, cultural, and sports events happening on campus.</p>
+        </div>
+    </header>
+
+    <section class="container my-5" data-aos="fade-up">
+        <div class="row g-3 align-items-center">
+            <div class="col-md-6">
+                <input type="text" class="form-control" id="eventSearch" placeholder="Search for events...">
+            </div>
+            <div class="col-md-6">
+                <select class="form-select" id="categoryFilter">
+                    <option selected value="all">All Categories</option>
+                    <option value="Academic">Academic</option>
+                    <option value="Cultural">Cultural</option>
+                    <option value="Sports">Sports</option>
+                    <option value="Literary">Literary</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <section class="container my-5">
+        <div class="row g-4" id="events-container">
+            <!-- Events will be loaded here by JavaScript -->
+        </div>
+    </section>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2025 College Event Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
+    <!-- ======== SCRIPT UPDATED TO FETCH FROM BACKEND ======== -->
+    <script>
+        AOS.init({ once: true, duration: 800 });
+
+        // This will hold all events fetched from the server
+        let allEvents = []; 
+
+        const eventsContainer = document.getElementById('events-container');
+        const eventSearch = document.getElementById('eventSearch');
+        const categoryFilter = document.getElementById('categoryFilter');
+
+        // NEW: Function to fetch events from our backend API
+        async function fetchEvents() {
+            try {
+                // Show a loading state
+                eventsContainer.innerHTML = '<p class="text-center w-100 fs-5 mt-4">Loading events...</p>';
+                
+                const response = await fetch('http://localhost:5000/api/events');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                allEvents = await response.json();
+                
+                // Once we have them, render them
+                renderEvents(allEvents);
+            } catch (error) {
+                console.error('Failed to fetch events:', error);
+                eventsContainer.innerHTML = '<p class="text-center w-100 fs-5 mt-4 text-danger">Could not load events. Please try again later.</p>';
+            }
+        }
+
+        function renderEvents(eventsToRender) {
+            eventsContainer.innerHTML = '';
+            if (eventsToRender.length === 0) {
+                // Show a message if no events match or if the DB is empty
+                eventsContainer.innerHTML = '<p class="text-center w-100 fs-5 mt-4" data-aos="zoom-in">No events found.</p>';
+                return;
+            }
+            eventsToRender.forEach((event, index) => {
+                // Format the date to be more readable
+                const eventDate = new Date(event.date).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+
+                const eventCard = `
+                    <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="${index * 100}">
+                        <div class="card event-card">
+                            <img src="${event.image}" class="card-img-top" alt="${event.name}" onerror="this.src='https://placehold.co/400x250/0d0d1a/c0c0c0?text=Image+Not+Found'">
+                            <div class="card-body p-4">
+                                <h5 class="card-title">${event.name}</h5>
+                                <p class="card-text mb-1"><strong>Date:</strong> ${eventDate}</p>
+                                <p class="card-text"><strong>Time:</strong> ${event.time}</p>
+                                <p class="card-text"><strong>Venue:</strong> ${event.venue}</p>
+                                <p class="card-text small">${event.description}</p>
+                                <a href="registration.html" class="btn btn-primary btn-sm mt-2">Register Now</a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                eventsContainer.innerHTML += eventCard;
+            });
+        }
+
+        function filterEvents() {
+            const searchTerm = eventSearch.value.toLowerCase();
+            const selectedCategory = categoryFilter.value;
+
+            // Filter from the master 'allEvents' list
+            const filteredEvents = allEvents.filter(event => {
+                const matchesSearch = event.name.toLowerCase().includes(searchTerm) || event.description.toLowerCase().includes(searchTerm);
+                const matchesCategory = selectedCategory === 'all' || event.category === selectedCategory;
+                return matchesSearch && matchesCategory;
+            });
+
+            renderEvents(filteredEvents);
+        }
+
+        // Run fetchEvents() when the page loads
+        document.addEventListener('DOMContentLoaded', fetchEvents);
+        
+        // Listeners are the same
+        eventSearch.addEventListener('input', filterEvents);
+        categoryFilter.addEventListener('change', filterEvents);
+    </script>
+</body>
+</html>
+

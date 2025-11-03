@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - College Event Management System</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="index.html">EventFlow Admin</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item"><a class="nav-link" href="index.html">Home (Public)</a></li>
+                    <li class="nav-item"><a class="nav-link active" aria-current="page" href="admin-dashboard.html">Dashboard</a></li>
+                    <!-- Add id="logoutButton" -->
+                    <li class="nav-item"><a class="nav-link" href="#" id="logoutButton">Logout</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <header class="header-section">
+        <div class="container" data-aos="fade-down">
+            <h1 class="display-4 fw-bold mb-3">Admin Dashboard</h1>
+            <p class="lead">Manage college events and registrations efficiently.</p>
+        </div>
+    </header>
+
+    <section class="dashboard-section container py-5">
+        <div class="row g-4">
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+                <div class="card text-center p-4">
+                    <i class="fas fa-calendar-alt card-icon"></i>
+                    <h5 class="card-title mb-3">Manage Events</h5>
+                    <p class="card-text">Add, update, or delete event details. Keep your event listings current.</p>
+                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#manageEventsModal" id="manageEventsBtn">
+                        Event Management
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+                <div class="card text-center p-4">
+                    <i class="fas fa-users card-icon"></i>
+                    <h5 class="card-title mb-3">View Registrations</h5>
+                    <p class="card-text">Access and export lists of registered participants for each event.</p>
+                    <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#viewRegistrationsModal" id="viewParticipantsBtn">
+                        View Participants
+                    </button>
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="300">
+                <div class="card text-center p-4">
+                    <i class="fas fa-chart-line card-icon"></i>
+                    <h5 class="card-title mb-3">Analytics & Reports</h5>
+                    <p class="card-text">Gain insights into event popularity and participant demographics (future feature).</p>
+                    <button type="button" class="btn btn-primary mt-3" disabled>Coming Soon</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================= -->
+    <!-- MANAGE EVENTS MODAL (ASSIGNMENT 6) -->
+    <!-- ============================================= -->
+    <div class="modal fade" id="manageEventsModal" tabindex="-1" aria-labelledby="manageEventsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="manageEventsModalLabel">Manage Events</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <!-- Add/Edit Event Form -->
+                        <div class="col-lg-4">
+                            <h4 id="eventFormTitle">Add New Event</h4>
+                            <form id="eventForm">
+                                <input type="hidden" id="eventId">
+                                <div class="mb-2">
+                                    <label for="eventName" class="form-label">Event Name</label>
+                                    <input type="text" class="form-control" id="eventName" required>
+                                </div>
+                                <div class="row">
+                                    <div class="col-6 mb-2">
+                                        <label for="eventDate" class="form-label">Date</label>
+                                        <input type="date" class="form-control" id="eventDate" required>
+                                    </div>
+                                    <div class="col-6 mb-2">
+                                        <label for="eventTime" class="form-label">Time</label>
+                                        <input type="text" class="form-control" id="eventTime" placeholder="e.g., 9:00 AM" required>
+                                    </div>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="eventVenue" class="form-label">Venue</label>
+                                    <input type="text" class="form-control" id="eventVenue" required>
+                                </div>
+                                 <div class="mb-2">
+                                    <label for="eventCategory" class="form-label">Category</label>
+                                    <select class="form-select" id="eventCategory" required>
+                                        <option value="Academic">Academic</option>
+                                        <option value="Cultural">Cultural</option>
+                                        <option value="Sports">Sports</option>
+                                        <option value="Literary">Literary</option>
+                                    </select>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="eventImage" class="form-label">Image URL</label>
+                                    <input type="text" class="form-control" id="eventImage" placeholder="https://placehold.co/...">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="eventDescription" class="form-label">Description</label>
+                                    <textarea class="form-control" id="eventDescription" rows="3" required></textarea>
+                                </div>
+                                <div class="d-grid gap-2">
+                                    <button type="submit" class="btn btn-primary">Save Event</button>
+                                    <button type="button" class="btn btn-secondary" id="clearEventFormBtn">Clear Form</button>
+                                </div>
+                            </form>
+                        </div>
+                        
+                        <!-- Current Events Table -->
+                        <div class="col-lg-8">
+                            <h4>Current Events</h4>
+                            <div class="table-responsive" style="max-height: 450px; overflow-y: auto;">
+                                <table class="table table-dark table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Date</th>
+                                            <th>Venue</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="eventsTableBody">
+                                        <!-- Events will be loaded here -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ============================================= -->
+    <!-- VIEW REGISTRATIONS MODAL (ASSIGNMENT 7) -->
+    <!-- ============================================= -->
+    <div class="modal fade" id="viewRegistrationsModal" tabindex="-1" aria-labelledby="viewRegistrationsModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="viewRegistrationsModalLabel">View Registered Participants</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="table-responsive" style="max-height: 500px; overflow-y: auto;">
+                        <table class="table table-dark table-striped">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Student ID</th>
+                                    <th>Email</th>
+                                    <th>Phone</th>
+                                    <th>Department</th>
+                                    <th>Event</th>
+                                    <th>Registered On</th>
+                                </tr>
+                            </thead>
+                            <tbody id="participantsTableBody">
+                                <!-- Participants will be loaded here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer text-center">
+        <div class="container">
+            <p>&copy; 2025 College Event Management System. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script> AOS.init({ once: true, duration: 800 }); </script>
+
+    <!-- ======== NEW: ADMIN DASHBOARD SCRIPT ======== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            // --- 1. AUTHENTICATION ---
+            // Check if user is logged in
+            if (sessionStorage.getItem('isAdminLoggedIn') !== 'true') {
+                // If not, redirect to login page
+                window.location.href = 'admin-login.html';
+                return; // Stop script execution
+            }
+
+            // Logout Button
+            document.getElementById('logoutButton').addEventListener('click', function() {
+                sessionStorage.removeItem('isAdminLoggedIn');
+                window.location.href = 'admin-login.html';
+            });
+
+
+            // --- 2. VIEW PARTICIPANTS (ASSIGNMENT 7) ---
+            const participantsTableBody = document.getElementById('participantsTableBody');
+            const viewParticipantsBtn = document.getElementById('viewParticipantsBtn');
+            
+            viewParticipantsBtn.addEventListener('click', loadParticipants);
+            
+            async function loadParticipants() {
+                participantsTableBody.innerHTML = '<tr><td colspan="7" class="text-center">Loading...</td></tr>';
+                try {
+                    const response = await fetch('http://localhost:5000/api/admin/participants');
+                    if (!response.ok) throw new Error('Failed to fetch participants');
+                    
+                    const participants = await response.json();
+                    participantsTableBody.innerHTML = ''; // Clear loading
+                    
+                    if (participants.length === 0) {
+                         participantsTableBody.innerHTML = '<tr><td colspan="7" class="text-center">No participants have registered yet.</td></tr>';
+                         return;
+                    }
+                    
+                    participants.forEach(p => {
+                        const regDate = new Date(p.registrationDate).toLocaleDateString();
+                        const row = `
+                            <tr>
+                                <td>${p.fullName}</td>
+                                <td>${p.studentId}</td>
+                                <td>${p.email}</td>
+                                <td>${p.phone}</td>
+                                <td>${p.department}</td>
+                                <td>${p.eventChoice}</td>
+                                <td>${regDate}</td>
+                            </tr>
+                        `;
+                        participantsTableBody.innerHTML += row;
+                    });
+                } catch (error) {
+                    console.error('Error loading participants:', error);
+                    participantsTableBody.innerHTML = `<tr><td colspan="7" class="text-center text-danger">Error loading participants.</td></tr>`;
+                }
+            }
+            
+            
+            // --- 3. MANAGE EVENTS (ASSIGNMENT 6 - CRUD) ---
+            const eventForm = document.getElementById('eventForm');
+            const eventFormTitle = document.getElementById('eventFormTitle');
+            const eventsTableBody = document.getElementById('eventsTableBody');
+            const clearEventFormBtn = document.getElementById('clearEventFormBtn');
+            const manageEventsBtn = document.getElementById('manageEventsBtn');
+            
+            const eventId = document.getElementById('eventId');
+            const eventName = document.getElementById('eventName');
+            const eventDate = document.getElementById('eventDate');
+            const eventTime = document.getElementById('eventTime');
+            const eventVenue = document.getElementById('eventVenue');
+            const eventCategory = document.getElementById('eventCategory');
+            const eventImage = document.getElementById('eventImage');
+            const eventDescription = document.getElementById('eventDescription');
+
+            // Load events table when modal is opened
+            manageEventsBtn.addEventListener('click', loadEventsTable);
+            
+            // Handle form submission (Create or Update)
+            eventForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const eventData = {
+                    name: eventName.value,
+                    date: eventDate.value,
+                    time: eventTime.value,
+                    venue: eventVenue.value,
+                    category: eventCategory.value,
+                    image: eventImage.value,
+                    description: eventDescription.value
+                };
+                
+                const currentEventId = eventId.value;
+                
+                try {
+                    let response;
+                    if (currentEventId) {
+                        // UPDATE (PUT)
+                        response = await fetch(`http://localhost:5000/api/admin/events/${currentEventId}`, {
+                            method: 'PUT',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(eventData)
+                        });
+                    } else {
+                        // CREATE (POST)
+                        response = await fetch('http://localhost:5000/api/admin/events', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(eventData)
+                        });
+                    }
+                    
+                    if (!response.ok) throw new Error('Failed to save event');
+                    
+                    clearEventForm();
+                    loadEventsTable(); // Refresh the table
+                    
+                } catch (error) {
+                    console.error('Error saving event:', error);
+                    alert('Error saving event.');
+                }
+            });
+            
+            // Load all events into the table
+            async function loadEventsTable() {
+                eventsTableBody.innerHTML = '<tr><td colspan="4" class="text-center">Loading...</td></tr>';
+                try {
+                    const response = await fetch('http://localhost:5000/api/events');
+                    if (!response.ok) throw new Error('Failed to fetch events');
+                    
+                    const events = await response.json();
+                    eventsTableBody.innerHTML = '';
+                    
+                    if (events.length === 0) {
+                         eventsTableBody.innerHTML = '<tr><td colspan="4" class="text-center">No events found. Add one!</td></tr>';
+                         return;
+                    }
+                    
+                    events.forEach(event => {
+                        const eventDateFormatted = new Date(event.date).toLocaleDateString();
+                        const row = document.createElement('tr');
+                        row.innerHTML = `
+                            <td>${event.name}</td>
+                            <td>${eventDateFormatted}</td>
+                            <td>${event.venue}</td>
+                            <td>
+                                <button class="btn btn-primary btn-sm edit-btn">Edit</button>
+                                <button class="btn btn-danger btn-sm delete-btn">Delete</button>
+                            </td>
+                        `;
+                        
+                        // Add event listener for DELETE
+                        row.querySelector('.delete-btn').addEventListener('click', () => deleteEvent(event._id));
+                        
+                        // Add event listener for EDIT
+                        row.querySelector('.edit-btn').addEventListener('click', () => editEvent(event));
+                        
+                        eventsTableBody.appendChild(row);
+                    });
+                } catch (error) {
+                    console.error('Error loading events:', error);
+                    eventsTableBody.innerHTML = '<tr><td colspan="4" class="text-center text-danger">Error loading events.</td></tr>';
+                }
+            }
+
+            // Delete an event
+            async function deleteEvent(id) {
+                if (!confirm('Are you sure you want to delete this event?')) return;
+                
+                try {
+                    const response = await fetch(`http://localhost:5000/api/admin/events/${id}`, {
+                        method: 'DELETE'
+                    });
+                    if (!response.ok) throw new Error('Failed to delete event');
+                    loadEventsTable(); // Refresh table
+                } catch (error) {
+                    console.error('Error deleting event:', error);
+                    alert('Error deleting event.');
+                }
+            }
+
+            // Populate form for editing
+            function editEvent(event) {
+                eventFormTitle.textContent = 'Edit Event';
+                eventId.value = event._id;
+                eventName.value = event.name;
+                // Format date for <input type="date"> which needs "YYYY-MM-DD"
+                eventDate.value = new Date(event.date).toISOString().split('T')[0];
+                eventTime.value = event.time;
+                eventVenue.value = event.venue;
+                eventCategory.value = event.category;
+                eventImage.value = event.image;
+                eventDescription.value = event.description;
+            }
+            
+            // Clear form button
+            clearEventFormBtn.addEventListener('click', clearEventForm);
+            
+            function clearEventForm() {
+                eventFormTitle.textContent = 'Add New Event';
+                eventForm.reset();
+                eventId.value = '';
+            }
+        });
+    </script>
+</body>
+</html>

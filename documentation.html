@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EventFlow - Project Documentation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-glow: #00f7ff;
+            --dark-bg: #0d0d1a;
+            --glass-bg: rgba(22, 22, 40, 0.8);
+            --text-primary: #ffffff;
+            --text-secondary: #c0c0c0;
+            --border-color: rgba(0, 247, 255, 0.3);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-secondary);
+            line-height: 1.7;
+            padding: 2rem;
+        }
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: var(--glass-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 15px;
+            padding: 2rem 3rem;
+            box-shadow: 0 0 30px rgba(0, 247, 255, 0.1);
+        }
+        h1, h2, h3 {
+            color: var(--text-primary);
+            font-weight: 600;
+            margin-top: 1.5em;
+            margin-bottom: 0.5em;
+            padding-bottom: 5px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        h1 {
+            color: var(--primary-glow);
+            font-size: 2.5rem;
+            text-shadow: 0 0 10px var(--primary-glow);
+            margin-top: 0;
+        }
+        h2 { font-size: 2rem; }
+        h3 { font-size: 1.5rem; }
+        ul, ol {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 0.5rem;
+        }
+        code {
+            font-family: 'Consolas', 'Courier New', monospace;
+            background: rgba(0,0,0,0.3);
+            color: var(--primary-glow);
+            padding: 3px 6px;
+            border-radius: 5px;
+            font-size: 0.95em;
+        }
+        pre {
+            background: rgba(0,0,0,0.4);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 1rem;
+            overflow-x: auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            color: var(--text-secondary);
+        }
+        a {
+            color: var(--primary-glow);
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+        strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>EventFlow: College Event Management System</h1>
+        <p>EventFlow is a full-stack web application designed to manage college events. It provides a clean, responsive interface for students to browse and register for upcoming events, and a secure admin dashboard for staff to manage event listings and view participant data.</p>
+        <p>This project was built as a part of a college assignment, demonstrating a complete understanding of frontend and backend web development, from static HTML to a dynamic, database-driven MERN-stack (MongoDB, Express, React/Node.js) application.</p>
+        
+        <h2>Features</h2>
+        
+        <h3>Student / Public-Facing:</h3>
+        <ul>
+            <li><strong>Dynamic Home Page:</strong> Features a "Featured Events" carousel that loads events directly from the database.</li>
+            <li><strong>Dynamic Event Listings:</strong> A dedicated "Events" page that fetches and displays all upcoming events from the backend.</li>
+            <li><strong>Search & Filter:</strong> Users can search for events by name or filter by category (Academic, Cultural, etc.).</li>
+            <li><strong>Dynamic Registration Form:</strong> The event dropdown in the registration form is dynamically populated from the database.</li>
+            <li><strong>Form Validation:</strong> The registration form features robust, client-side JavaScript validation.</li>
+            <li><strong>Responsive Design:</strong> The entire site is fully responsive for mobile, tablet, and desktop devices using Bootstrap.</li>
+        </ul>
+        
+        <h3>Administrator-Facing:</h3>
+        <ul>
+            <li><strong>Secure Admin Login:</strong> A separate login page for administrators (<code>/admin-login.html</code>).</li>
+            <li><strong>Protected Dashboard:</strong> The admin dashboard is protected and cannot be accessed without a successful login (using <code>sessionStorage</code>).</li>
+            <li><strong>Event CRUD:</strong> Full <strong>C</strong>reate, <strong>R</strong>ead, <strong>U</strong>pdate, and <strong>D</strong>elete functionality for all events.</li>
+            <li><strong>View Participants:</strong> Admin can view a complete list of all students who have registered for any event, sorted by date.</li>
+        </ul>
+        
+        <h2>Technologies Used</h2>
+        
+        <h3>Frontend:</h3>
+        <ul>
+            <li>HTML5</li>
+            <li>CSS3 (with custom "glassmorphism" design)</li>
+            <li>Bootstrap 5</li>
+            <li>JavaScript (ES6+)</li>
+            <li>Splide.js (for carousels)</li>
+            <li>AOS (Animate on Scroll)</li>
+        </ul>
+        
+        <h3>Backend:</h3>
+        <ul>
+            <li>Node.js</li>
+            <li>Express.js</li>
+        </ul>
+        
+        <h3>Database:</h3>
+        <ul>
+            <li>MongoDB</li>
+            <li>Mongoose (for Object Data Modeling)</li>
+            <li>MongoDB Atlas (for cloud database hosting)</li>
+        </ul>
+        
+        <h2>How to Run Locally</h2>
+        <p>To run this project on your local machine, you will need <a href="https://nodejs.org/" target="_blank">Node.js</a> and a free <a href="https://www.mongodb.com/cloud/atlas" target="_blank">MongoDB Atlas</a> account.</p>
+        
+        <h3>1. Backend Setup</h3>
+        <ol>
+            <li>Navigate to the <code>backend</code> folder:
+                <pre><code>cd backend</code></pre>
+            </li>
+            <li>Install the required packages:
+                <pre><code>npm install</code></pre>
+            </li>
+            <li>Open the <code>backend/server.js</code> file.</li>
+            <li>Find the <code>MONGO_URI</code> constant (around line 12).</li>
+            <li>Replace the placeholder string with your own MongoDB Atlas connection string.</li>
+            <li>Start the backend server:
+                <pre><code>node server.js</code></pre>
+            </li>
+            <li>The server will be running at <a href="http://localhost:5000" target="_blank">http://localhost:5000</a>.</li>
+        </ol>
+        
+        <h3>2. Frontend Setup</h3>
+        <ol>
+            <li>There is no build step for the frontend.</li>
+            <li>Ensure your backend server is running.</li>
+            <li>Open the root project folder in VS Code.</li>
+            <li>Right-click on <code>index.html</code> and select <strong>"Open with Live Server"</strong>.</li>
+            <li>The website will open in your browser.</li>
+        </ol>
+        
+        <h3>3. Admin Credentials</h3>
+        <p>To access the admin dashboard:</p>
+        <ul>
+            <li>Navigate to <code>admin-login.html</code>.</li>
+            <li><strong>Username:</strong> <code>admin</code></li>
+            <li><strong>Password:</strong> <code>admin123</code></li>
+        </ul>
+        
+        <h2>Project Structure</h2>
+        <pre><code>/
+|-- index.html              (Dynamic Home Page)
+|-- events.html             (Dynamic Event List Page)
+|-- registration.html       (Dynamic Registration Form)
+|-- about.html              (Static Page)
+|-- contact.html            (Static Page)
+|-- admin-login.html        (Admin Login)
+|-- admin-dashboard.html    (Admin CRUD Dashboard)
+|-- styles.css              (Main Stylesheet)
+|-- documentation.html      (This file)
+|-- backend/
+|   |-- server.js           (The Node.js/Express Server)
+|   |-- package.json
+|
+|-- README.md               (Original Markdown file)
+</code></pre>
+    </div>
+</body>
+</html>
